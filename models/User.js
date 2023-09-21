@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     address: {
         type: String,
         //minLength: 10,
-        required: [true, 'Email is required'],
+        required: [true, 'Address is required'],
     },
     // myPublications: {
     //     type: String,

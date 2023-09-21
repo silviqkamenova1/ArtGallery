@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose')
 
 const routes = require('./routes');
-//const {authentication} = require('./middlewares/authMiddleware');
+const {authentication} = require('./middlewares/authMiddleware');
 const app = express();
 
 app.engine('hbs', handlebars.engine({
@@ -17,7 +17,7 @@ app.use('/style', express.static('public'))
 app.use(express.urlencoded({extended: false}))//to parse data from sended forms with post request
 //which will be parsed and recived in req.body like object
 app.use(cookieParser());
-//app.use(authentication)
+app.use(authentication)
 app.use(routes);
 
 mongoose.set('strictQuery', false);

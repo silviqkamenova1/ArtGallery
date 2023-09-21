@@ -27,22 +27,22 @@
 
             <ul class="menu">
                 <li><a href="/art/catalog">Gallery</a></li>
-             
+                {{#if isAuthenticated}}
                 <li><a href="/art/create">Create Publication</a></li>
                 <li><a href="/art/profile">Profile</a></li>
                 <li><a href="/logout">Logout</a></li>
-                
+                {{else}}
                 <li><a href="/login">Login</a></li>
                 <li><a href="/register">Register</a></li>
-                
+                {{/if}}
             </ul>
 
         </nav>
-       <!-- {{#if error}}
+       {{#if error}}
         <div class="error-box">
             <p>{{error}}</p>
         </div>
-        {{/if}}-->
+        {{/if}}
         {{{body}}}
         <footer>
             © Js Back-End Retake Exam 2021
