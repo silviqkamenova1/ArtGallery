@@ -44,6 +44,5 @@ router.get('/logout', isAuth, (req, res) => {
    res.clearCookie('auth');
    res.redirect('/');
 });
-//isAuth is using the check are u loggedn in befor to log u out
 
 module.exports = router;

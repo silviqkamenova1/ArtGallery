@@ -13,16 +13,14 @@ const userSchema = new mongoose.Schema({
     address: {
         type: String,
         //minLength: 10,
+        ref: 'Publication',
         required: [true, 'Address is required'],
+        
     },
-    // myPublications: {
-    //     type: String,
-    //     enum: {
-    //         values: ['crypto-wallet', 'credit-card', 'debit-card', 'paypal'],
-    //         message: 'Inavlid payment method',
-    //     },
-    //     required: false,
-    // },
+    myPublications: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Publication',
+    }],
 })
 const User = mongoose.model('User', userSchema);
 module.exports = User;
