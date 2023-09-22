@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const mongoose = require('mongoose');
+
 
 //const { paymentMethodsMap } = require('../constants');
 const { isAuth } = require('../middlewares/authMiddleware');
@@ -26,8 +28,11 @@ router.get('/:publicationId/details', async (req, res) => {
     const publication = await publicationService.getOneDetailed(req.params.publicationId).lean();
     //crypto.paymentMethod = paymentMethodsMap[crypto.paymentMethod]
     //const isBuyer = publication.buyers?.some(id => id == req.user?._id)
-    const isOwner = publication.owner == req.user?._id;
-    console.log(isOwner);
+    ObjectId = publication.author._id
+    console.log(ObjectId.toString());
+    console.log(req.user?._id);
+    const isOwner = publication.author._id == ObjectId.toString(req.user?._id);
+    mongoose.Types.ObjectId
     res.render('art/details', { ...publication, isOwner})//, isBuyer
 });
 
