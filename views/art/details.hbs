@@ -14,13 +14,16 @@
                     <!-- Only for registered user and author of the publication -->
                 {{#if isAuthenticated}}
                     {{#if isOwner}}
-                    <a href="/art/{{_id}}/Edit" class="btn-edit">Edit</a>
+                    <a href="/art/{{_id}}/edit" class="btn-edit">Edit</a>
                     <a href="/art/{{_id}}/delete" class="btn-delete">Delete</a>
                     <!-- logged in user who has not yet shared the publication-->
                     {{else}}
-                    <a href="#" class="btn-share">Share publication</a>
-                    <!-- logged in user who has already shared the publication-->
-                    <p class="shared-pub">You already shared this publication</p>
+                        {{#if isShared}}
+                        <p class="shared-pub">You already shared this publication</p>
+                        <!-- logged in user who has already shared the publication-->
+                        {{else}}
+                        <a href="/art/{{_id}}/shared" class="btn-share">Share publication</a>
+                        {{/if}}
                     {{/if}}
                 {{/if}}
                 </div>

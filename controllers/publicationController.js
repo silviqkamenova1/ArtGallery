@@ -26,44 +26,46 @@ router.get('/profile', async (req, res) => {
 
 router.get('/:publicationId/details', async (req, res) => {
     const publication = await publicationService.getOneDetailed(req.params.publicationId).lean();
-    //crypto.paymentMethod = paymentMethodsMap[crypto.paymentMethod]
-    //const isBuyer = publication.buyers?.some(id => id == req.user?._id)
-    ObjectId = publication.author._id
-    console.log(ObjectId.toString());
-    console.log(req.user?._id);
-    const isOwner = publication.author._id == ObjectId.toString(req.user?._id);
-    mongoose.Types.ObjectId
-    res.render('art/details', { ...publication, isOwner})//, isBuyer
+    ObjectId = publication.author._id;
+
+    // console.log(ObjectId.toString());
+    // console.log(req.user?._id);
+
+    const isOwner = ObjectId.toString() == req.user?._id;
+    const isShared = publication.usersShared?.some(id => id == req.user?._id)
+    //console.log(isOwner);
+    res.render('art/details', { ...publication, isOwner, isShared})//, 
 });
 
+//crypto.paymentMethod = paymentMethodsMap[crypto.paymentMethod]
 
 
 
 
-// router.get('/:cryptoId/buy', isAuth, async (req, res) => {
-//     try{
-//         await cryptoService.buy(req.user._id, req.params.cryptoId);
-//     } catch(error){
-//         return res.render('404')    
-//     }
+router.get('/:publicationId/shared', isAuth, async (req, res) => {
+    try{
+        await publicationService.share(req.user._id, req.params.publicationId);
+    } catch(error){
+        return res.render('404')    
+    }
 
-//     res.redirect(`/crypto/${req.params.cryptoId}/details`)
-// });
+    res.redirect(`/art/${req.params.cryptoId}/details`)
+});
 
-// router.get('/:cryptoId/edit',isAuth, async (req, res) => {
-//     const crypto = await cryptoService.getOne(req.params.cryptoId);
+router.get('/:publicationId/edit',isAuth, async (req, res) => {
+    const publication = await publicationService.getOne(req.params.publicationId);
 
-//     const paymentMethods = getPaymentDataViewData(crypto.paymentMethod);
+    //const paymentMethods = getPaymentDataViewData(crypto.paymentMethod);
 
-//     res.render('crypto/edit', { crypto, paymentMethods })
-// });
+    res.render('art/edit', { ...publication })//, paymentMethods
+});
 
-// router.post('/:cryptoId/edit', isAuth, async (req, res) => {
-//     const cryptoData = req.body;
-//     await cryptoService.edit(req.params.cryptoId, cryptoData);
+router.post('/:publicationId/edit', isAuth, async (req, res) => {
+    const publication = req.body;
+    await publicationService.edit(req.params.publicationId, req.body);
 
-//     res.redirect(`/crypto/${req.params.cryptoId}/details`)
-// });
+    res.redirect(`/art/${req.params.publicationId}/details`)
+});
 
 
 
@@ -83,12 +85,12 @@ router.post('/create', isAuth, async (req, res) => {
     res.redirect('/art/catalog');
 });
 
-// router.get('/:cryptoId/delete', isAuth, async (req, res) => {
+router.get('/:publicationId/delete', isAuth, async (req, res) => {
 
-//     await cryptoService.delete(req.params.cryptoId);
-//     res.render('/crypto/catalog')
+    await publicationService.delete(req.params.publicationId);
+    res.redirect('/art/catalog')
 
-// });
+});
 
 
 module.exports = router;

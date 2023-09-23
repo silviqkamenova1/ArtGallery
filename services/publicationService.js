@@ -20,18 +20,18 @@ exports.search = async (name, paymentMethod) => {
     return crypto;
 }
 
-exports.buy = async (userId, cryptoId) => {
-    const crypto = await Crypto.findById(cryptoId);
-    crypto.buyers.push(userId);
+exports.share = async (userId, publicationId) => {
+    const publication = await Publication.findById(publicationId);
+    publication.usersShared.push(userId);
 
-    return crypto.save()
+    return publication.save()
 }
 //Crypto.findByIdAndUpdate(cryptoId, {$push: { buyers: userId}})
 //(single query)mongo db push operator - find crypto by Id and update it when push userId in property buyers
 exports.create = (ownerId, publicationData) =>{ 
 publicationData.author = ownerId
-Publication.create({...publicationData, owner: ownerId})}
+Publication.create({...publicationData, owner: ownerId}, { runValidators: true})}
 
-exports.edit = (cryptoId, cryptoData) => Crypto.findByIdAndUpdate(cryptoId, cryptoData, { runValidators: true})
+exports.edit = (publicationId, publicationData) => Publication.findByIdAndUpdate(publicationId, publicationData, { runValidators: true})
 
-exports.delete =  (cryptoId) =>  Crypto.findByIdAndDelete(cryptoId)
+exports.delete =  (publicationId) =>  Publication.findByIdAndDelete(publicationId)
