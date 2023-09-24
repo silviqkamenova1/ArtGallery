@@ -30,7 +30,7 @@ exports.share = async (userId, publicationId) => {
 //(single query)mongo db push operator - find crypto by Id and update it when push userId in property buyers
 exports.create = (ownerId, publicationData) =>{ 
 publicationData.author = ownerId
-Publication.create({...publicationData, owner: ownerId}, { runValidators: true})}
+Publication.create({...publicationData, owner: ownerId})}
 
 exports.edit = (publicationId, publicationData) => Publication.findByIdAndUpdate(publicationId, publicationData, { runValidators: true})
 

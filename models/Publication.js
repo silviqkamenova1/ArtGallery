@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const publicSchema = new mongoose.Schema({
     title: {
         type: String,
+        minLength: 6,
         required: [true, 'Title is required'],
     },
     paintingTechnique: {
         type: String,
+        mmaxLength: 15,
         required: [true, 'PaintingTechnique is required'],
     },
     artPicture: {

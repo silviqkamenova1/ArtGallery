@@ -49,7 +49,7 @@ router.get('/:publicationId/shared', isAuth, async (req, res) => {
         return res.render('404')    
     }
 
-    res.redirect(`/art/${req.params.cryptoId}/details`)
+    res.redirect('/')
 });
 
 router.get('/:publicationId/edit',isAuth, async (req, res) => {

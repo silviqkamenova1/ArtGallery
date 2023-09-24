@@ -38,12 +38,12 @@
             </ul>
 
         </nav>
-       {{#if error}}
-        <div class="error-box">
-            <p>{{error}}</p>
-        </div>
-        {{/if}}
         {{{body}}}
+        {{#if error}}
+            <div class="error-box">
+                <p>{{error}}</p>
+            </div>
+        {{/if}}
         <footer>
             © Js Back-End Retake Exam 2021
         </footer>
