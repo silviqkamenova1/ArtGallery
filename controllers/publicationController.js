@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const { isAuth } = require('../middlewares/authMiddleware');
 const publicationService = require('../services/publicationService');
 const { getErrorMessage } = require('../utils/errorutils');
-//const { getPaymentDataViewData } = require('../utils/viewDataUtils')
+const { userService } = require('../services/userService')
 
 router.get('/catalog', async (req, res) => {
     
@@ -17,11 +17,9 @@ router.get('/catalog', async (req, res) => {
 });
 
 router.get('/profile', async (req, res) => {
-    // const { name, paymentMethod } = req.query;
-    // const crypto = await cryptoService.search(name, paymentMethod);
-    // const paymentMethods = getPaymentDataViewData(paymentMethod);
+    const user = await userService.getOne(req.user._id);
 
-    res.render('art/profile')//, { crypto, paymentMethods, name })
+    res.render('/profile', {...user})
 });
 
 router.get('/:publicationId/details', async (req, res) => {
@@ -36,11 +34,6 @@ router.get('/:publicationId/details', async (req, res) => {
     //console.log(isOwner);
     res.render('art/details', { ...publication, isOwner, isShared})//, 
 });
-
-//crypto.paymentMethod = paymentMethodsMap[crypto.paymentMethod]
-
-
-
 
 router.get('/:publicationId/shared', isAuth, async (req, res) => {
     try{
