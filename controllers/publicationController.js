@@ -2,7 +2,6 @@ const router = require('express').Router();
 const mongoose = require('mongoose');
 
 
-//const { paymentMethodsMap } = require('../constants');
 const { isAuth } = require('../middlewares/authMiddleware');
 const publicationService = require('../services/publicationService');
 const { getErrorMessage } = require('../utils/errorutils');
@@ -10,20 +9,14 @@ const { getErrorMessage } = require('../utils/errorutils');
 router.get('/catalog', async (req, res) => {
     
     const publication = await publicationService.getAll();
-
-
     res.render('art/catalog', { publication })
 });
 
 router.get('/profile', async (req, res) => {
-    // try{
+
         const user = await publicationService.getUserId(req.user._id);
         console.log(user);
         res.render('art/profile', {...user})
-
-    // } catch(error) {
-    //     return res.render('404')  
-    // }
 
 });
 
@@ -31,12 +24,8 @@ router.get('/:publicationId/details', async (req, res) => {
     const publication = await publicationService.getOneDetailed(req.params.publicationId).lean();
     ObjectId = publication.author._id;
 
-    // console.log(ObjectId.toString());
-    // console.log(req.user?._id);
-
     const isOwner = ObjectId.toString() == req.user?._id;
     const isShared = publication.usersShared?.some(id => id == req.user?._id)
-    //console.log(isOwner);
     res.render('art/details', { ...publication, isOwner, isShared})//, 
 });
 
@@ -53,9 +42,8 @@ router.get('/:publicationId/shared', isAuth, async (req, res) => {
 router.get('/:publicationId/edit',isAuth, async (req, res) => {
     const publication = await publicationService.getOne(req.params.publicationId);
 
-    //const paymentMethods = getPaymentDataViewData(crypto.paymentMethod);
 
-    res.render('art/edit', { ...publication })//, paymentMethods
+    res.render('art/edit', { ...publication })
 });
 
 router.post('/:publicationId/edit', isAuth, async (req, res) => {
@@ -84,7 +72,6 @@ router.post('/create', isAuth, async (req, res) => {
 });
 
 router.get('/:publicationId/delete', isAuth, async (req, res) => {
-
     await publicationService.delete(req.params.publicationId);
     res.redirect('/art/catalog')
 

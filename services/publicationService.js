@@ -12,17 +12,12 @@ exports.getUserId = (userId) => User.findById(userId).lean()
 exports.share = async (userId, publicationId) => {
     const publication = await Publication.findById(publicationId);
     publication.usersShared.push(userId);
-
     return publication.save()
 }
-//Crypto.findByIdAndUpdate(cryptoId, {$push: { buyers: userId}})
-//(single query)mongo db push operator - find crypto by Id and update it when push userId in property buyers
 exports.create = (ownerId, publicationData) =>{ 
-publicationData.author = ownerId
-Publication.create({...publicationData, owner: ownerId})
+    publicationData.author = ownerId
+    Publication.create({...publicationData, owner: ownerId})
 }
-
-
 
 exports.edit = (publicationId, publicationData) => Publication.findByIdAndUpdate(publicationId, publicationData, { runValidators: true})
 
