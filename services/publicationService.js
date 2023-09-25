@@ -1,4 +1,5 @@
 const Publication = require('../models/Publication');
+const User = require('../models/User');
 
 exports.getAll = () => Publication.find({}).lean();
 
@@ -6,6 +7,7 @@ exports.getOne = (publicationId) => Publication.findById(publicationId).lean();
 
 exports.getOneDetailed = (publicationId) => Publication.findById(publicationId).populate('author');;
 
+exports.getUserId = (userId) => User.findById(userId).lean()
 
 exports.share = async (userId, publicationId) => {
     const publication = await Publication.findById(publicationId);

@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 const { isAuth } = require('../middlewares/authMiddleware');
 const publicationService = require('../services/publicationService');
 const { getErrorMessage } = require('../utils/errorutils');
-const { userService } = require('../services/userService')
 
 router.get('/catalog', async (req, res) => {
     
@@ -17,9 +16,15 @@ router.get('/catalog', async (req, res) => {
 });
 
 router.get('/profile', async (req, res) => {
-    const user = await userService.getOne(req.user._id);
+    // try{
+        const user = await publicationService.getUserId(req.user._id);
+        console.log(user);
+        res.render('art/profile', {...user})
 
-    res.render('/profile', {...user})
+    // } catch(error) {
+    //     return res.render('404')  
+    // }
+
 });
 
 router.get('/:publicationId/details', async (req, res) => {
