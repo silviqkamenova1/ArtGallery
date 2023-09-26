@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const { isAuth } = require('../middlewares/authMiddleware');
 const publicationService = require('../services/publicationService');
+const userService = require('../services/userService');
 const { getErrorMessage } = require('../utils/errorutils');
 
 router.get('/catalog', async (req, res) => {
@@ -14,9 +15,9 @@ router.get('/catalog', async (req, res) => {
 
 router.get('/profile', async (req, res) => {
 
-        const user = await publicationService.getUserId(req.user._id);
-        console.log(user);
-        res.render('art/profile', {...user})
+        const user = await publicationService.getUserId(req.user._id).populate('myPublications').lean();
+        const publicationTitles = user.myPublications.map(x => x.title).join(', ')
+        res.render('art/profile', {...user, publicationTitles})
 
 });
 
@@ -60,10 +61,11 @@ router.get('/create', isAuth, (req, res) => {
 });
 
 router.post('/create', isAuth, async (req, res) => {
-    const publicationData = req.body;
+    const publicationData = {...req.body, author: req.user._id};
     
     try {
-        await publicationService.create(req.user._id, publicationData);
+        const publication = await publicationService.create(publicationData);
+        await userService.addPublication(req.user._id, publication._id)
     } catch (error) {
         return res.status(400).render('art/create', {error: getErrorMessage(error)})
     }

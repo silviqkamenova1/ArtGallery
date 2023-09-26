@@ -14,10 +14,12 @@ exports.share = async (userId, publicationId) => {
     publication.usersShared.push(userId);
     return publication.save()
 }
-exports.create = (ownerId, publicationData) =>{ 
+exports.create = async (ownerId, publicationData) =>{ 
     publicationData.author = ownerId
-    Publication.create({...publicationData, owner: ownerId})
+    const publication = await Publication.create({...publicationData, owner: ownerId})
+
 }
+
 
 exports.edit = (publicationId, publicationData) => Publication.findByIdAndUpdate(publicationId, publicationData, { runValidators: true})
 
