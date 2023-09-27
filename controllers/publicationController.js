@@ -61,11 +61,13 @@ router.get('/create', isAuth, (req, res) => {
 });
 
 router.post('/create', isAuth, async (req, res) => {
-    const publicationData = {...req.body, author: req.user._id};
     
     try {
+        const userId = req.user._id
+        const publicationData = {...req.body,  userId};
         const publication = await publicationService.create(publicationData);
-        await userService.addPublication(req.user._id, publication._id)
+        
+        await publicationService.addPublication(req.user._id, publication._id)
     } catch (error) {
         return res.status(400).render('art/create', {error: getErrorMessage(error)})
     }

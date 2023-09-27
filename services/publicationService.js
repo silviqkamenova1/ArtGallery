@@ -19,6 +19,16 @@ exports.create = async (ownerId, publicationData) =>{
     const publication = await Publication.create({...publicationData, owner: ownerId})
 
 }
+exports.addPublication = async (userId, publicationId) => {
+    return User.updateOne({_id: userId }, { $push: { myPublications: publicationId}})
+   
+   
+    // const user = await User.findById(userId);
+    // user.myPublications.push(publication);
+
+    // await user.save()
+    
+}
 
 
 exports.edit = (publicationId, publicationData) => Publication.findByIdAndUpdate(publicationId, publicationData, { runValidators: true})
